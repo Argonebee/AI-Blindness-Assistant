@@ -18,54 +18,62 @@ The system follows a three-tier architecture:
 
 ```mermaid
 graph TB
+    %% AI Vision Assistant – High Level Architecture
+
     subgraph "User Device"
-        UI[User Interface]
-        Camera[Camera Controller]
-        Audio[Audio Interface]
-        VoiceCmd[Voice Command Handler]
+        UI["User Interface"]
+        Camera["Camera Controller"]
+        Audio["Audio Interface"]
+        VoiceCmd["Voice Command Handler"]
     end
-    
+
     subgraph "AWS Cloud"
         subgraph "API Layer"
-            Gateway[API Gateway]
+            Gateway["API Gateway"]
         end
-        
+
         subgraph "Compute Layer"
-            ImageLambda[Image Analysis Lambda]
-            VoiceLambda[Voice Processing Lambda]
+            ImageLambda["Image Analysis Lambda"]
+            VoiceLambda["Voice Processing Lambda"]
         end
-        
+
         subgraph "AI Services"
-            Rekognition[Amazon Rekognition]
-            Polly[Amazon Polly]
-            Transcribe[Amazon Transcribe]
+            Rekognition["Amazon Rekognition"]
+            Polly["Amazon Polly"]
+            Transcribe["Amazon Transcribe"]
         end
-        
+
         subgraph "Storage"
-            S3[S3 Temporary Storage]
+            S3["S3 Temporary Storage (Optional)"]
         end
     end
-    
+
+    %% User device flow
     UI --> Camera
     UI --> Audio
     Audio --> VoiceCmd
-    
-    Camera -->|Snapshot Image| Gateway
+
+    %% Requests to cloud
+    Camera -->|Snapshot| Gateway
     VoiceCmd -->|Voice Command| Gateway
-    
-    Gateway -->|Route Request| ImageLambda
-    Gateway -->|Route Request| VoiceLambda
-    
+
+    %% Routing
+    Gateway -->|Route| ImageLambda
+    Gateway -->|Route| VoiceLambda
+
+    %% Image analysis path
     ImageLambda -->|Analyze Image| Rekognition
-    ImageLambda -->|Store Temp| S3
-    
+    ImageLambda -->|Temp Store| S3
+    ImageLambda -->|Result| Gateway
+
+    %% Voice processing path
     VoiceLambda -->|Speech to Text| Transcribe
     VoiceLambda -->|Text to Speech| Polly
-    
-    ImageLambda -->|Analysis Result| Gateway
-    VoiceLambda -->|Audio/Text Result| Gateway
-    
+    VoiceLambda -->|Result| Gateway
+
+    %% Response back to user
     Gateway -->|Audio Response| Audio
+
 ```
 
 ## Components and Interfaces
@@ -403,3 +411,4 @@ Each correctness property will be implemented as a single property-based test:
 - **Voice Interface Testing**: Validate voice commands work with various accents and speech patterns
 
 - **High Contrast Validation**: Verify visual elements meet accessibility standards
+
