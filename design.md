@@ -31,8 +31,8 @@ graph TB
         end
         
         subgraph "Compute Layer"
-            Lambda1[Image Analysis Lambda]
-            Lambda2[Voice Processing Lambda]
+            ImageLambda[Image Analysis Lambda]
+            VoiceLambda[Voice Processing Lambda]
         end
         
         subgraph "AI Services"
@@ -50,21 +50,22 @@ graph TB
     UI --> Audio
     Audio --> VoiceCmd
     
-    Camera --> Gateway
-    VoiceCmd --> Gateway
+    Camera -->|Snapshot Image| Gateway
+    VoiceCmd -->|Voice Command| Gateway
     
-    Gateway --> Lambda1
-    Gateway --> Lambda2
+    Gateway -->|Route Request| ImageLambda
+    Gateway -->|Route Request| VoiceLambda
     
-    Lambda1 --> Rekognition
-    Lambda1 --> S3
-    Lambda2 --> Transcribe
-    Lambda2 --> Polly
+    ImageLambda -->|Analyze Image| Rekognition
+    ImageLambda -->|Store Temp| S3
     
-    Lambda1 --> Gateway
-    Lambda2 --> Gateway
+    VoiceLambda -->|Speech to Text| Transcribe
+    VoiceLambda -->|Text to Speech| Polly
     
-    Gateway --> Audio
+    ImageLambda -->|Analysis Result| Gateway
+    VoiceLambda -->|Audio/Text Result| Gateway
+    
+    Gateway -->|Audio Response| Audio
 ```
 
 ## Components and Interfaces
@@ -400,4 +401,5 @@ Each correctness property will be implemented as a single property-based test:
 ### Accessibility Testing
 - **Screen Reader Compatibility**: Test with actual screen reader software
 - **Voice Interface Testing**: Validate voice commands work with various accents and speech patterns
+
 - **High Contrast Validation**: Verify visual elements meet accessibility standards
