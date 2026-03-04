@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #111;
+  color: #fff;
+}
+
+video, img {
+  width: 300px;
+  border: 2px solid #6f00ff;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#resultBox {
+  margin: 20px auto;
+  padding: 15px;
+  width: 80%;
+  max-width: 500px;
+  background: #222;
+  border: 2px solid #00ff22;
+  border-radius: 8px;
+  font-size: 16px;
+}

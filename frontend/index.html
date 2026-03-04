@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Vision Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>AI Vision Assistant</h1>
+
+  <video id="video" autoplay></video>
+  <br>
+
+  <div>
+  <button id="voiceBtn">Use Voice Command</button>
+  <button id="describeBtn">Describe Scene</button>
+  <button id="readBtn">Read Text</button>
+  </div>
+
+  <canvas id="canvas" style="display:none;"></canvas>
+
+  <h3>Captured Image:</h3>
+  <img id="capturedImage" />
+
+  <h3>Analysis Result:</h3>
+  <div id="resultBox">No analysis yet.</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
